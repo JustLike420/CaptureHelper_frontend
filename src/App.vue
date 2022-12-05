@@ -1,22 +1,27 @@
 <template>
   <div id="app">
-    <Nav />
-    <router-view/>
-    <Footer />
+    <div class="container">
+      <Nav/>
+      <router-view/>
+      <Footer/>
+      </div>
   </div>
 </template>
 
 <style>
 @import "assets/css/bootstrap.css";
+
 .logo {
   width: 50%;
 }
+
 </style>
 
 <script>
-  import Nav from "./components/Nav";
-  import Footer from "./components/Footer"
-  export default {
-    components: {Nav, Footer}
-  }
+import Nav from "./components/Nav";
+import Footer from "./components/Footer"
+
+export default {
+  components: {Nav, Footer}
+}
 </script>
