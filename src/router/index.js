@@ -13,7 +13,7 @@ const routes = [
     component: TeamList
   },
   {
-    path: '/:id',
+    path: '/team/:id',
     name: 'TeamSingle',
     component: TeamSingle,
     props: true,
