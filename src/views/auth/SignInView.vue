@@ -8,7 +8,7 @@
 import SignIn from "@/components/SignIn";
 
 export default {
-  name: "TeamList",
+  name: "SignIn",
   components: {
     SignIn
   }
