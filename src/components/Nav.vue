@@ -18,10 +18,21 @@
       </ul>
 
       <div class="col-md-3 text-end">
-        <template v-if="auth">
+        <template v-if="$store.state.isAuthenticated">
           <!--                    <button @click="logout" type="button" class="btn btn-outline-primary me-2">ПРОФИЛЬ</button>-->
-          <button type="button" class="btn btn-primary me-2">ПРОФИЛЬ <font-awesome-icon icon="fa-solid fa-user"/>
+          <button type="button" class="btn btn-primary me-2 dropdown-toggle" data-bs-toggle="dropdown"
+                  aria-expanded="false">ПРОФИЛЬ
+            <font-awesome-icon icon="fa-solid fa-user"/>
           </button>
+          <div class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">{{ this.$store.state.username }}</a></li>
+
+            <div class="dropdown-divider"></div>
+            <li><a class="dropdown-item" href="#">Мой профиль</a></li>
+            <li><a class="dropdown-item" href="#">Моя команда</a></li>
+            <li><a class="dropdown-item" href="#">Настройки</a></li>
+            <li><a class="dropdown-item" @click="logout">Выход</a></li>
+          </div>
         </template>
         <template v-else>
           <router-link :to="{name: 'SignIn' }" type="button" class="btn btn-outline-primary me-2">
@@ -44,17 +55,13 @@ library.add(faRightToBracket, faUser)
 export default {
   name: "Nav",
   computed: {
-    auth() {
-      if (sessionStorage.getItem("auth_token")) {
-        return true
-      }
-    }
   },
   methods: {
     logout() {
-      sessionStorage.removeItem("auth_token")
+      localStorage.removeItem("auth_token")
+      localStorage.removeItem("username")
       window.location = '/'
-    }
+    },
   }
 }
 </script>
