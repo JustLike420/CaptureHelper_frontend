@@ -19,11 +19,14 @@
 
       <div class="col-md-3 text-end">
         <template v-if="auth">
-          <button @click="logout" type="button" class="btn btn-outline-primary me-2">Выход</button>
+          <!--                    <button @click="logout" type="button" class="btn btn-outline-primary me-2">ПРОФИЛЬ</button>-->
+          <button type="button" class="btn btn-primary me-2">ПРОФИЛЬ <font-awesome-icon icon="fa-solid fa-user"/>
+          </button>
         </template>
         <template v-else>
-          <router-link :to="{name: 'SignIn' }" type="button" class="btn btn-outline-primary me-2">Вход</router-link>
-          <router-link :to="{name: 'SignUp' }" type="button" class="btn btn-primary">Регистрация</router-link>
+          <router-link :to="{name: 'SignIn' }" type="button" class="btn btn-outline-primary me-2">
+            <font-awesome-icon icon="fa-solid fa-right-to-bracket"/>
+          </router-link>
         </template>
       </div>
     </header>
@@ -31,6 +34,13 @@
 </template>
 
 <script>
+// font awesome icon login
+import {library} from '@fortawesome/fontawesome-svg-core'
+import {faRightToBracket} from '@fortawesome/free-solid-svg-icons'
+import {faUser} from '@fortawesome/free-solid-svg-icons'
+
+library.add(faRightToBracket, faUser)
+
 export default {
   name: "Nav",
   computed: {
