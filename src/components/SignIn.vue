@@ -1,23 +1,23 @@
 <template>
-  <form @submit.prevent="setLogin">
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+  <div class="container col-md-4">
+    <form @submit.prevent="setLogin" class="">
+      <h1 class="h3 mb-3 fw-normal text-center">Вход</h1>
 
-    <div class="form-floating">
-      <input type="text" class="form-control" v-model="username">
-      <label for="floatingInput">Email address</label>
-    </div>
-    <div class="form-floating">
-      <input type="password" class="form-control" v-model="password">
-      <label for="floatingPassword">Password</label>
-    </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" v-model="username">
+        <label for="floatingInput">Почта</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="password" class="form-control" v-model="password">
+        <label for="floatingPassword">Пароль</label>
+      </div>
 
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
-    </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-  </form>
+      <div class="form-group d-flex flex-column flex-sm-row flex-wrap justify-content-center justify-content-sm-between align-items-center">
+      <button class="btn btn-lg btn-primary" type="submit">Войти</button>
+        <router-link :to="{name: 'SignUp' }" type="button" class="btn btn-lg btn-danger">Регистрация</router-link>
+</div>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -71,5 +71,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
