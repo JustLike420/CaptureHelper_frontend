@@ -18,6 +18,7 @@
 <script>
 import Nav from "./components/Nav";
 import Footer from "./components/Footer"
+import './assets/js/bootstrap'
 
 export default {
   components: {Nav, Footer}
