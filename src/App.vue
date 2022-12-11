@@ -19,8 +19,18 @@
 import Nav from "./components/Nav";
 import Footer from "./components/Footer"
 import './assets/js/bootstrap'
+import axios from "axios";
 
 export default {
-  components: {Nav, Footer}
+  components: {Nav, Footer},
+  beforeCreate() {
+    this.$store.commit('initializeSite')
+    const token = this.$store.state.token
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = "Token " + token
+    } else {
+      axios.defaults.headers.common['Authorization'] = ""
+    }
+  },
 }
 </script>
