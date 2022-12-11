@@ -12,17 +12,18 @@
         <label for="floatingPassword">Пароль</label>
       </div>
 
-      <div class="form-group d-flex flex-column flex-sm-row flex-wrap justify-content-center justify-content-sm-between align-items-center">
-      <button class="btn btn-lg btn-primary" type="submit">Войти</button>
+      <div class="form-group d-flex flex-column flex-sm-row flex-wrap justify-content-center
+      justify-content-sm-between align-items-center">
+        <button class="btn btn-lg btn-primary" type="submit">Войти</button>
         <router-link :to="{name: 'SignUp' }" type="button" class="btn btn-lg btn-danger">Регистрация</router-link>
-</div>
+      </div>
     </form>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import $ from 'jquery'
+
 export default {
   name: "SignIn",
   data() {
@@ -31,41 +32,43 @@ export default {
       password: ""
     };
   },
-  methods: {
-    setLogin() {
-      $.ajax({
-        url: `http://127.0.0.1:8000/auth/token/login`,
-        type: "POST",
-        data: {
-          username: this.username,
-          password: this.password
-        },
-        success: (response) => {
-          console.log(response.auth_token)
-          alert("Спасибо что Вы с нами")
-          sessionStorage.setItem("auth_token", response.auth_token)
-          //       // this.$router.push({name: "home"})
-          //     },
-        },
-        error: (response) => {
-          console.log(response)
-          if (response.status === 400) {
-            alert("Логин или пароль не верен")
-          }
-        }
-      })
-    },
 
-    // setLogin(e) {
-    //   const formData = {
-    //     username: this.username,
-    //     password: this.password
-    //   }
-    //   axios.post('http://127.0.0.1:8000/auth/token/login', formData)
-    //       .then(response => {console.log(response)})
-    //
-    //
-    // }
+  created() {
+    if (this.$store.state.isAuthenticated) {
+      this.$router.push('/');
+    }
+  },
+  methods: {
+    setLogin(e) {
+      const formData = {
+        username: this.username,
+        password: this.password
+      }
+
+      axios.post('http://127.0.0.1:8000/auth/token/login/', formData)
+          .then(response => {
+            const token = response.data.auth_token
+
+            this.$store.commit('setToken', token)
+            localStorage.setItem("auth_token", token)
+            // axios.defaults.headers.common["Authorization"] = "Token " + token
+            axios
+          .get("http://127.0.0.1:8000/auth/users/me/", {
+                headers: {
+                  Authorization: `Token ${token}`
+                }
+              }
+          )
+          .then(response => {
+            this.$store.commit('setUsername', response.data.username)
+            localStorage.setItem('username', response.data.username)
+            this.$router.push({name: "home"})
+          })
+          .catch(error => {
+            console.log(JSON.stringify(error))
+          })
+          })
+    }
   }
 }
 </script>
