@@ -11,7 +11,10 @@
         <input type="password" class="form-control" v-model="password">
         <label for="floatingPassword">Пароль</label>
       </div>
-
+      <div class="form-group d-flex flex-column flex-sm-row flex-wrap justify-content-center
+      justify-content-sm-between align-items-center" v-if="errors.length">
+        <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
+      </div>
       <div class="form-group d-flex flex-column flex-sm-row flex-wrap justify-content-center
       justify-content-sm-between align-items-center">
         <button class="btn btn-lg btn-primary" type="submit">Войти</button>
@@ -29,7 +32,8 @@ export default {
   data() {
     return {
       username: "",
-      password: ""
+      password: "",
+      errors: []
     };
   },
 
@@ -53,20 +57,34 @@ export default {
             localStorage.setItem("auth_token", token)
             // axios.defaults.headers.common["Authorization"] = "Token " + token
             axios
-          .get("http://127.0.0.1:8000/auth/users/me/", {
-                headers: {
-                  Authorization: `Token ${token}`
-                }
+                .get("http://127.0.0.1:8000/auth/users/me/", {
+                      headers: {
+                        Authorization: `Token ${token}`
+                      }
+                    }
+                )
+                .then(response => {
+                  this.$store.commit('setUsername', response.data.username)
+                  localStorage.setItem('username', response.data.username)
+                  this.$router.push({name: "home"})
+                })
+                .catch(error => {
+                  if (error.response) {
+                    for (const property in error.response.data) {
+                      this.errors.push(`${property}: ${error.response.data[property]}`)
+                    }
+                  } else if (error.message) {
+                    this.errors.push('something went wrong. Please try again!')
+                  }
+                })
+          }).catch(error => {
+            if (error.response) {
+              for (const property in error.response.data) {
+                this.errors.push(`${property}: ${error.response.data[property]}`)
               }
-          )
-          .then(response => {
-            this.$store.commit('setUsername', response.data.username)
-            localStorage.setItem('username', response.data.username)
-            this.$router.push({name: "home"})
-          })
-          .catch(error => {
-            console.log(JSON.stringify(error))
-          })
+            } else if (error.message) {
+              this.errors.push('something went wrong. Please try again!')
+            }
           })
     }
   }
